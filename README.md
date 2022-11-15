@@ -7,9 +7,7 @@
 
 <p align="left"> <a href="https://twitter.com/vivek90700583" target="blank"><img src="https://img.shields.io/twitter/follow/vivek90700583?logo=twitter&style=for-the-badge" alt="vivek90700583" /></a> </p>
 
-- 🔭 I’m currently freelancing [Malalai Kavingan](http://malalaikavingan.com/)
-
-- 🌱 I’m currently learning **MERN**
+- 🔭 I’m currently working in Tata Consultancy Services Bangalore
 
 - 👨‍💻 All of my projects are available at [https://blissful-swartz-41b530.netlify.app/](https://blissful-swartz-41b530.netlify.app/)
 
