@@ -1,0 +1,24 @@
+1. Project Description:(Please create a description by ur own)
+    Prudential provides an exclusive platform for internal customers to create an entity which is maintained and which they use that entity to track or use for
+	and it has crud operations create entity, modify entity, delete and view entity. It is like ticketing system where they will create an entity and admin will check that modify or revert it back to them. We have an option to upload documents to support created entity. So that admin can accept the entity. Then it will move to next level of verification. 
+	Note for chatgbt: It works like ticket handling but u chatgbt can create a description according to ur understanding. I will prepare according to that. Here we used the latest angular version.
+
+2. Responsibilities:
+	Enhanced lazy loading strategies to optimize bundle size and initial load time.
+	Enhanced internationalization (i18n) support, making the app multilingual-ready.
+    Integrated RESTful APIs with Angular services for seamless data exchange.
+	Developed custom Angular directives and pipes for reusable UI components.
+    Developed responsive UI components using Angular and TypeScript.
+    Implemented Angular Reactive Forms for dynamic user inputs.
+    Integrated RxJS for handling asynchronous operations and API responses.
+    Performed end-to-end testing to validate workflows.
+
+3. Major Impact:
+	Enabled dynamic imports in routing, reducing unnecessary module loading and improving navigation speed.
+	Enhanced lazy loading strategy, leading to a 20% decrease in initial load time.
+	Streamlined CSS styling by integrating Tailwind CSS, making UI updates more efficient.
+    Increased user engagement with a modern, responsive UI built using Angular Material.
+    Reduced form submission errors using proper validation and error handling in Angular Forms.
+    Enabled dynamic and interactive dashboards, providing real-time data insights.
+    Improved team collaboration and code quality using Git version control and structured branching strategies.
+    Enhanced long-term maintainability by documenting core functionalities and best practices.
