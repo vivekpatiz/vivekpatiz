@@ -1,0 +1,1 @@
+"Personal Exigency" Exception can be raised backdated maximum up to 2 previous days from current date and future dated up to next 5 days with maximum 3 days in one request. For a longer WFO exception, please select the appropriate category.
