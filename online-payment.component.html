@@ -1,0 +1,190 @@
+<head>
+  <script src="https://js.stripe.com/v3"></script>
+</head>
+
+<body>
+  <div class="row" style="background: white;">
+  
+    <div class="col-md-10 m-3 cardTitle">Payments & Refunds</div>
+    <div [ngClass]="{'lpp_sticky_Pnl':msgPnl == true,'lpp_non_sticky_Pnl': msgPnl == false}">
+      <app-status-message *ngIf="statusMessage" [statusMessage]="statusMessage" [errorTxnId]="errorTxnId">
+      </app-status-message>
+      </div>
+    <div class="col-12 mb-3">
+        <div>
+          <div class="row">
+            <div class="viewContainer col-12">
+              <h4 class="pl-3 title1">Applicable Fees</h4>
+              <div class="col-12">
+                <!-- <div class="tableStyle">
+                  <table class="table m-0" bordered="true">
+                    <thead>
+                      <tr>
+                        <td class="tableBorderHead td1"><b></b></td>
+                        <td class="tableBorderHead td1"><b> Fee Type</b></td>
+                        <td class="tableBorderHead td1"><b>Amount </b></td>
+                        <td class="tableBorderHead td1"><b>Payment Status</b> </td>
+                        <td class="tableBorderHead td1"><b>Action</b> </td>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let data of paymentDetails; let i=index">
+                    
+                        <td class="tableBorder td1"><mat-checkbox (change)="remove($event,data.feeType)"
+                          [checked]="data.transaction_status === 'Y'" [disabled]="data.status != 'Yet to Pay'"></mat-checkbox></td>
+                        <td class="tableBorder td2">{{data.feeType}}</td>
+                        <td class="tableBorder td3">{{data.feeAmount}}</td>
+                        <td class="tableBorder td4">{{data.status}}</td>
+                        <td class="tableBorder td5"><div class="more_icon"></div>
+                          <div class="expand">
+                            <div>Override</div>
+                            <div>Waive</div>
+                            <div>Adjust to Loan Amount</div>
+                          </div>
+                        </td>
+                      </tr>    
+                    </tbody>
+                  </table>
+                  
+                </div> -->
+                <div class="grid-padding  lpp_mortgrid_pagination lpp_grid_radio_popup" *ngIf="loadGrid == true && !noDataFound">
+                  <mort-grid #paymentFeeGrid [inputDataSource]="feeDetailsList" 
+                  [grid_Configuration]="grid_Configuration"
+                  (onDataEmit)="gridEmitData($event)"></mort-grid>
+              </div>
+          
+              </div>
+              <div style="display: grid;" class="ml-3 m-1">
+                <form [formGroup]="signUpForm1"
+                    style="margin-top:4px; margin-left: 0px;">
+                    <div class="accept"><input type="checkbox" class="custom-
+                                        control-input"
+                            formControlName="checkedCondition1"
+                            [(ngModel)]="checkedCondition1" style="accent-color: #86bc00;"
+                            (change)="onMenuOptionChange()" id="save-info">
+                        <span class="pl-2">
+                          The broker has gained consent from the applicant to pay the fees, and the applicant has provided their card details to allow the payment to be taken.</span>
+                    </div>
+                    <!-- [ngClass]="{disabled:!checkedCondition1}"-->
+                    <div class="accept"><input 
+                            type="checkbox" class="custom-
+                                        control-input"
+                            formControlName="checkedCondition2"
+                            [(ngModel)]="checkedCondition2"  style="accent-color: #86bc00;"
+                            (change)="onMenuOptionChange()" id="save-info">
+                        <span class="pl-2"> The applicant has been made aware of the fees and the amount and any conditions attached to the fees e.g. refundable/non-refundable</span>
+                    </div>
+                    <!-- [ngClass]="{disabled:!checkedCondition1}"-->
+                    <div class="accept"><input
+                      type="checkbox" class="custom-
+                                  control-input"
+                      formControlName="checkedCondition2"
+                      [(ngModel)]="checkedCondition3"  style="accent-color: #86bc00;"
+                      (change)="onMenuOptionChange()" id="save-info">
+                  <span class="pl-2"> Broker should input the customer’s email address for the fee receipt.</span>
+              </div>
+              <div class="accept"><input
+                type="checkbox" class="custom-
+                            control-input"
+                formControlName="checkedCondition2"
+                [(ngModel)]="checkedCondition4"  style="accent-color: #86bc00;"
+                (change)="onMenuOptionChange()" id="save-info">
+            <span class="pl-2">No card details are held in the portal following submission (broker or customer).</span>
+        </div>
+                </form>
+            </div>
+                <form id="SelectedFeePaymentForm" name="form1"
+                  (submit)="onSubmit($event,totalSelectedFee,'SelectedFeePaymentForm','APP')">
+                  <input type="hidden" name="AMOUNT" value="">
+                  <input type="hidden" name="CURRENCY" value="GBP">
+                  <input type="hidden" name="LANGUAGE" value="en_US">
+                  <input type="hidden" name="ORDERID" value="">
+                  <input type="hidden" name="PSPID" value="tcsbancstest">
+                  <input type="hidden" name="SHASIGN" value="">
+                  <input type="hidden" name="ACCEPTURL" value="http://localhost:4205/#/landing/fullApplication/payment">
+                  <button class="btn btn-primary continueBtn" id="checkout-button-price_1J56uSSClVt29WLQy8TFqCCd"
+                    role="link" type="submit" *ngIf="ischeckboxClicked && checkedCondition1 && checkedCondition2 && checkedCondition3 && checkedCondition4">
+                    Pay &#163;  <span *ngIf="totalSelectedFee != null">{{totalSelectedFee}} </span><span *ngIf="totalSelectedFee == null">0 </span> </button>
+                </form>
+            </div>
+          </div>
+          <div class="row col-12 pt-3 mt-5 pb-3">
+            <div class="col-12 text-right" *ngIf="!isFormReadOnly">
+              <!-- <div class="col-7 text-right"> -->
+              <!-- <button class="btn btn-primary learnMoreBtn mr-3 cls-secondary-btn" (click)="cancelBtn()">
+                Cancel
+              </button>
+              <button class="btn btn-primary continueBtn mr-3 cls-primary-btn" (click)="backBtn()">
+                Back
+              </button> -->
+              <!-- </div> -->
+              <button class="btn btn-primary continueBtn cls-primary-btn" (click)="onValidateAndSave('Save')" [disabled]="disableSaveBtn">
+                Save
+              </button>
+              <button class="btn btn-primary continueBtn cls-primary-btn" (click)="onValidateAndSave('SaveNext')" [disabled]="disableSaveBtn">
+                Save & Next
+              </button>
+            </div>
+            <div class="col-12 text-right" *ngIf="isFormReadOnly">
+              <button class="btn btn-primary continueBtn cls-primary-btn" (click)="OnNextClick()">
+                              Next
+              </button>
+              </div>
+
+          </div>
+        </div>
+    </div>
+  </div>
+</body>
+<div class="modal" id="refundMessage" data-keyboard="false" data-dismiss="modal" aria-label="Close">
+  <div class="modal-dialog" class="displayErrorMsg justify-content-center">
+    <div class="modal-content">
+      <div class="modal-body">
+        <span [ngClass]="dangerAlertShow? 'errrMsg':'saveMsg'">{{message}}</span>
+      </div>
+      <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-3 m-3">
+          <button class="text-center addButton" data-dismiss="modal">Ok</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="overrideModal" data-keyboard="false" data-dismiss="modal" aria-label="Close">
+  <div class="modal-dialog" class="displayErrorMsg justify-content-center">
+    <div class="modal-content">
+      <div class="modal-header">
+        Override
+      </div>
+      <div class="modal-body">
+        <div class="container">
+            <div class="label">Application Number</div>
+            <div>MBS-212121</div> <!--this will be dyamnic whic row is clicked-->
+            <div class="label">Fee Type</div>
+            <div>Completion Fee</div><!--this will be dyamnic whic row is clicked-->
+            <div class="label">Amount</div>
+            <div>100</div><!--this will be dyamnic whic row is clicked-->
+        </div>
+        <div class="comment_container">
+          <label class="">Comments<span>*</span></label>
+          <input type="text" >
+        </div>
+      </div>
+      <div class="row" style="display: flex;justify-content: end;">
+        <div class="col-md-3 m-3 buttons">
+          <button class="text-center addButton" data-dismiss="modal">Cancel</button>
+          <button class="text-center addButton" (click)="initiateOverride()">Initiate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #currencyTemplate let-index="index" let-colIdx="colIdx" let-dataSource="dataSource" let-colfObj="colfObj">
+  <div class="templateStyles cls-font">
+      {{formatAmount(colfObj, dataSource)}}
+  </div>
+</ng-template>
