@@ -2011,38 +2011,54 @@ export class OnlinePaymentComponent implements OnInit {
   }
 
   submit() {
-        this.directdebitVL = new DebitCardVL();
-        Loader.start();
-        this.directdebitVL.getDebitDetails(this.fromaccountdetail, this.debitcarddetails).pipe(finalize(() => {
-            Loader.stop();
-        })).subscribe((data) => {
-            if (data.error) {
-                this.submitErrorMsg = ExceptionHandler.getInstance().prepareExceptionData(data.error);
-                this.messageOptions.options.showMessageContent = true;
-                this.messageOptions.options.messageType = 'error';
-                if (this.submitErrorMsg && this.submitErrorMsg.fieldName && this.submitErrorMsg.description) {
-                    this.messageOptions.options.message = this.submitErrorMsg.description;
-                } else {
-                    this.messageOptions.options.message = this.submitErrorMsg;
-                }
-            } else {
-                let crtid = data[0].dataEntity[0].referenceDataList[1].identifier;
-                let membershipNo = this.utils.getStartingZerosTruncated(this.customerDetails.customerId);
-                const tempForm = document.createElement('form');
-                let orderID = data[0].dataEntity[0].referenceDataList[1].identifier;
-                tempForm.elements['ORDERID'].value = orderID;
-                tempForm.elements['AMOUNT'].value = this.debitcarddetails.amount;
-                let ShaString = "ACCEPTURL=http://localhost:1113/#/app/core/retail/widescreen/login/login-landing/payment3654b20d-3bec-416b-a952-02d5c8b3e25aAMOUNT=" + this.debitcarddetails.amount + "3654b20d-3bec-416b-a952-02d5c8b3e25aCURRENCY=GBP3654b20d-3bec-416b-a952-02d5c8b3e25aLANGUAGE=en_US3654b20d-3bec-416b-a952-02d5c8b3e25aORDERID=" + orderID + "3654b20d-3bec-416b-a952-02d5c8b3e25aPSPID=tcsbancstest3654b20d-3bec-416b-a952-02d5c8b3e25a"
-                let SHASIGN = CryptoJS.SHA1(ShaString);
-                tempForm.elements['SHASIGN'].value = SHASIGN; //"07DFDDFF2391B8D531F49550BED2995CC88F8776";
-                tempForm.method = "post";
-                tempForm.action = "https://mdepayments.epdq.co.uk/ncol/test/orderstandard_utf8.asp";
-                tempForm.submit();
+  this.directdebitVL = new DebitCardVL();
+  Loader.start();
 
-                // window.open(this.WorldpayDomain + "?&testMode=" + this.WorldpaytestMode + "&instId=" + this.WorldpayinstId + "&cartId=" + membershipNo + "&amount=" + this.debitcarddetails.amount + "&currency=GBP&shopperAdditionalAccountNumber=" + this.fromaccountdetail.fromAccount.accountNumberTruncated + "&MC_requestId=" + crtid + "&MC_opt=IB", '_self');
-                // window.open( this.WorldpayDomain+"?&testMode="+this.WorldpaytestMode+"&instId="+this.WorldpayinstId+"&cartId="+crtid+"&amount="+this.debitcarddetails.amount+"&currency=GBP&shopperAdditionalAccountNumber="+this.fromaccountdetail.fromAccount.accountNumberTruncated+"&C_requestId="+this.fromaccountdetail.fromAccount.accountNumberTruncated+"&successURL="+ this.callbackURL+"cartId="+crtid+"&balance"+this.fromaccountdetail.fromAccount.availableBalance+"&pendingURL="+this.callbackURL+"&failureURL="+this.callbackURL+"&cancelURL"+this.callbackURL,'_self');
-                // this.logoutFunc();
-            }
-        });
+  this.directdebitVL.getDebitDetails(this.fromaccountdetail, this.debitcarddetails).pipe(
+    finalize(() => {
+      Loader.stop();
+    })
+  ).subscribe((data) => {
+    if (data.error) {
+      this.submitErrorMsg = ExceptionHandler.getInstance().prepareExceptionData(data.error);
+      this.messageOptions.options.showMessageContent = true;
+      this.messageOptions.options.messageType = 'error';
+      this.messageOptions.options.message = this.submitErrorMsg?.description || this.submitErrorMsg;
+    } else {
+      const orderID = data[0].dataEntity[0].referenceDataList[1].identifier;
+      const amount = this.debitcarddetails.amount;
+
+      // Prepare SHASIGN string (double-check the exact format expected by Barclays)
+      const ShaString = `ACCEPTURL=http://localhost:1113/#/app/core/retail/widescreen/login/login-landing/payment3654b20d-3bec-416b-a952-02d5c8b3e25aAMOUNT=${amount}3654b20d-3bec-416b-a952-02d5c8b3e25aCURRENCY=GBP3654b20d-3bec-416b-a952-02d5c8b3e25aLANGUAGE=en_US3654b20d-3bec-416b-a952-02d5c8b3e25aORDERID=${orderID}3654b20d-3bec-416b-a952-02d5c8b3e25aPSPID=tcsbancstest3654b20d-3bec-416b-a952-02d5c8b3e25a`;
+      const SHASIGN = CryptoJS.SHA1(ShaString).toString();
+
+      // Create form
+      const tempForm = document.createElement('form');
+      tempForm.method = 'post';
+      tempForm.action = 'https://mdepayments.epdq.co.uk/ncol/test/orderstandard_utf8.asp';
+      tempForm.style.display = 'none';
+
+      // Helper to create hidden inputs
+      const addHiddenField = (name: string, value: string) => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = name;
+        input.value = value;
+        tempForm.appendChild(input);
+      };
+
+      // Add required fields
+      addHiddenField('ORDERID', orderID);
+      addHiddenField('AMOUNT', amount);
+      addHiddenField('CURRENCY', 'GBP');
+      addHiddenField('LANGUAGE', 'en_US');
+      addHiddenField('PSPID', 'tcsbancstest');
+      addHiddenField('ACCEPTURL', 'http://localhost:1113/#/app/core/retail/widescreen/login/login-landing/payment');
+      addHiddenField('SHASIGN', SHASIGN);
+
+      document.body.appendChild(tempForm);
+      tempForm.submit();
     }
+  });
+}
 }
