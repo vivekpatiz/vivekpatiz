@@ -1,0 +1,7 @@
+ERROR in ./src/core/retail/ui/widescreen/app/module/document-enquiry/document-enquiry.module.ts
+Module build failed (from ./node_modules/@ngtools/webpack/src/index.js):
+Error: C:\Users\2015243\OneDrive - TCS COM PROD\Projects\5. Bancs\MBS\MBS_DGTL_WEB\BD-UI-RTL\src\core\retail\ui\widescreen\app\module\document-enquiry\document-enquiry.module.ts is missing from the TypeScript compilation. Please make sure it is in your tsconfig via the 'files' or 'include' property.
+    at AngularCompilerPlugin.getCompiledFile (C:\Users\2015243\OneDrive - TCS COM PROD\Projects\5. Bancs\MBS\MBS_DGTL_WEB\BD-UI-RTL\node_modules\@ngtools\webpack\src\angular_compiler_plugin.js:753:23)
+    at C:\Users\2015243\OneDrive - TCS COM PROD\Projects\5. Bancs\MBS\MBS_DGTL_WEB\BD-UI-RTL\node_modules\@ngtools\webpack\src\loader.js:41:31
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
