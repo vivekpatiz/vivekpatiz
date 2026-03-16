@@ -1,8 +1,0 @@
-Here’s a refined and professional Project Description for Prudential:
-
-Project: Prudential
-
-Description:
-Prudential is an internal entity management system that allows users to create, track, and manage entities through a structured workflow. The platform functions similarly to a ticketing system, where users create entities, attach supporting documents, and submit them for approval. Administrators review, modify, or revert the entities based on compliance requirements. Once approved, the entity progresses through multiple verification levels for final validation. The system supports CRUD operations (Create, Modify, Delete, View) and includes a document upload feature to enhance approval efficiency. The application is built using the latest Angular version, ensuring high performance, scalability, and an optimized user experience.
-
-This version makes it structured, professional, and easy to understand while capturing the essence of the project. Let me know if you need any tweaks!
